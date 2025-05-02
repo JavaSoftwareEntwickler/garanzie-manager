@@ -83,8 +83,13 @@ Nel caso si voglia popolare il DB con un utente di test:
 ```bash
 {
   "username": "test",
-  "password": "test12",
-  "email": "test@test.com"
+  "password": "testtest",
+  "email": "test@test.com",
+  "profilo": {
+    "nome": "test",
+    "cognome": "test",
+    "biografia": "test"
+  }
 }
 ```
 
