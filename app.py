@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
-from models import User, Garanzia
-from forms.forms import RegisterForm, GaranziaForm
+from models.models import User, Garanzia, Profilo
+from forms.forms import RegisterForm, GaranziaForm, ProfiloForm
 from mongoengine import connect
 
 import os
@@ -116,6 +116,34 @@ def profilo():
     if request.method == 'POST':
         pass
     return render_template('profilo.html')
+
+@app.route('/edit-profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    user = current_user._get_current_object()
+    form = ProfiloForm(obj=user.profilo)  # precompila se esiste
+
+    if form.validate_on_submit():
+        if not user.profilo:
+            user.profilo = Profilo()
+            
+        user.profilo.nome = form.nome.data
+        user.profilo.cognome = form.cognome.data
+        user.profilo.biografia = form.biografia.data
+
+
+        # gestione upload foto
+        if form.foto_profilo.data:
+            filename = secure_filename(form.foto_profilo.data.filename)
+            path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            form.foto_profilo.data.save(path)
+            user.profilo.foto_profilo = filename
+
+        user.save()
+        flash('Profilo aggiornato con successo', 'success')
+        return redirect(url_for('profilo'))
+
+    return render_template('edit-profile.html', form=form)
 
 # Logout
 @app.route('/logout')

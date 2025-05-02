@@ -1,6 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, DateField, EmailField
-from wtforms.validators import DataRequired, Email, Length
+from flask_wtf.file import FileAllowed, FileField
+from wtforms import StringField, PasswordField, DateField, EmailField, TextAreaField
+from wtforms.validators import DataRequired, Email, Length, Optional
+
 
 # Form per aggiungere una garanzia
 class GaranziaForm(FlaskForm):
@@ -15,3 +17,11 @@ class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=3, max=20)])
     email = EmailField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=6)])
+
+# Form del Profilo
+class ProfiloForm(FlaskForm):
+    nome = StringField('Nome', validators=[DataRequired(), Length(min=3, max=35)])
+    cognome = StringField('Cognome', validators=[DataRequired(), Length(min=3, max=50)])
+    data_nascita = DateField('Data di Nascita', validators=[Optional()], format='%Y-%m-%d')
+    biografia = TextAreaField('Biografia', validators=[Optional(), Length(max=500)])
+    foto_profilo = FileField('Foto Profilo', validators=[Optional(), FileAllowed(['jpg', 'png', 'jpeg'], 'Solo immagini!')])
