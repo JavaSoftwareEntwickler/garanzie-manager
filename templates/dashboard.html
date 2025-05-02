@@ -1,39 +1,60 @@
-<!DOCTYPE html>
-<html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dashboard</title>
-  </head>
-  <body>
-    <h1>Benvenuto, {{ current_user.username }}</h1>
-    <a href="{{ url_for('logout') }}">Logout</a>
-    <h2>Aggiungi una garanzia</h2>
-    <form action="{{ url_for('dashboard') }}" method="post" enctype="multipart/form-data">
-      {{ form.hidden_tag() }}
-      {{ form.nome_oggetto.label }} {{ form.nome_oggetto() }} <br />
-      {{ form.data_acquisto.label }} {{ form.data_acquisto() }} <br />
-      {{ form.fine_garanzia.label }} {{ form.fine_garanzia() }} <br />
-      {{ form.luogo_acquisto.label }} {{ form.luogo_acquisto() }} <br />
-      {{ form.note.label }} {{ form.note() }} <br />
-      Foto Oggetto:<input type="file" name="foto_oggetto" /><br />
-      Scontrino:<input type="file" name="scontrino" /><br />
-      <button type="submit">Aggiungi Garanzia</button>
-    </form>
+{% extends 'base.html' %}
+
+{% block title %}
+  Dashboard
+{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1>Benvenuto, {{ current_user.username }}</h1>
+      <a href="{{ url_for('logout') }}" class="btn btn-outline-danger">Logout</a>
+    </div>
+
+    <div class="card mb-4">
+      <div class="card-header">Aggiungi una garanzia</div>
+      <div class="card-body">
+        <form action="{{ url_for('dashboard') }}" method="post" enctype="multipart/form-data">
+          {{ form.hidden_tag() }}
+          <div class="form-group">{{ form.nome_oggetto.label }} {{ form.nome_oggetto(class='form-control') }}</div>
+          <div class="form-group">{{ form.data_acquisto.label }} {{ form.data_acquisto(class='form-control') }}</div>
+          <div class="form-group">{{ form.fine_garanzia.label }} {{ form.fine_garanzia(class='form-control') }}</div>
+          <div class="form-group">{{ form.luogo_acquisto.label }} {{ form.luogo_acquisto(class='form-control') }}</div>
+          <div class="form-group">{{ form.note.label }} {{ form.note(class='form-control') }}</div>
+          <div class="form-group">
+            <label>Foto Oggetto</label>
+            <input type="file" name="foto_oggetto" class="form-control-file" />
+          </div>
+          <div class="form-group">
+            <label>Scontrino</label>
+            <input type="file" name="scontrino" class="form-control-file" />
+          </div>
+          <button type="submit" class="btn btn-primary">Aggiungi Garanzia</button>
+        </form>
+      </div>
+    </div>
 
     <h2>Le tue garanzie</h2>
-    <ul>
+    <div class="row">
       {% for garanzia in garanzie %}
-        <li>
-          <strong>{{ garanzia.nome_oggetto }}</strong><br />
-          Acquistato il: {{ garanzia.data_acquisto }}<br />
-          Fine Garanzia: {{ garanzia.fine_garanzia }}<br />
-          Luogo di acquisto: {{ garanzia.luogo_acquisto }}<br />
-          Note: {{ garanzia.note }}<br />
-          <img src="{{ url_for('static', filename='uploads/' + garanzia.foto_oggetto) }}" width="100" /><br />
-          <img src="{{ url_for('static', filename='uploads/' + garanzia.scontrino) }}" width="100" /><br />
-        </li>
+        <div class="col-md-4 mb-4">
+          <div class="card h-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ garanzia.nome_oggetto }}</h5>
+              <p class="card-text">
+                <strong>Acquisto:</strong> {{ garanzia.data_acquisto }}<br />
+                <strong>Scadenza:</strong> {{ garanzia.fine_garanzia }}<br />
+                <strong>Luogo:</strong> {{ garanzia.luogo_acquisto }}<br />
+                <strong>Note:</strong> {{ garanzia.note }}
+              </p>
+            </div>
+            <div class="card-footer">
+              <img src="{{ url_for('static', filename='uploads/' + garanzia.foto_oggetto) }}" class="img-fluid mb-2" />
+              <img src="{{ url_for('static', filename='uploads/' + garanzia.scontrino) }}" class="img-fluid" />
+            </div>
+          </div>
+        </div>
       {% endfor %}
-    </ul>
-  </body>
-</html>
+    </div>
+  </div>
+{% endblock %}

@@ -1,13 +1,36 @@
-<!DOCTYPE html>
-<html lang="it">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Gestione Garanzie</title>
-  </head>
-  <body>
-    <h1>Benvenuto nella gestione delle garanzie!</h1>
-    <a href="{{ url_for('login') }}">Login</a>
-    <a href="{{ url_for('register') }}">Registrati</a>
-  </body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %}
+  Home - GaranzieApp
+{% endblock %}
+
+{% block content %}
+  <div class="text-center mb-5">
+    <h1 class="display-4">Gestisci tutte le tue garanzie in un unico posto</h1>
+    <p class="lead">Archivia scontrini, date e ricevi promemoria prima della scadenza.</p>
+    <a class="btn btn-primary btn-lg" href="{{ url_for('register') }}">Registrati Ora</a>
+  </div>
+
+  <div id="carouselExampleIndicators" class="carousel slide mb-5" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    </ol>
+    <div class="carousel-inner rounded shadow">
+      <div class="carousel-item active">
+        <img src="{{ url_for('static', filename='uploads/logo.png') }}" class="d-block w-100" alt="Garanzia oggetto" />
+      </div>
+      <div class="carousel-item">
+        <img src="{{ url_for('static', filename='uploads/Scontrino-venezia.jpeg') }}" class="d-block w-100" alt="Scontrino esempio" />
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Precedente</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Successivo</span>
+    </a>
+  </div>
+{% endblock %}
