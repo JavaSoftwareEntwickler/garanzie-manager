@@ -110,6 +110,13 @@ def dashboard():
     garanzie = Garanzia.objects(user=current_user)
     return render_template('dashboard.html', form=form, garanzie=garanzie)
 
+
+@app.route('/profilo', methods=['GET', 'POST'])
+def profilo():
+    if request.method == 'POST':
+        pass
+    return render_template('profilo.html')
+
 # Logout
 @app.route('/logout')
 @login_required
