@@ -4,6 +4,7 @@ from werkzeug.utils import secure_filename
 from models.models import User, Garanzia, Profilo
 from forms.forms import RegisterForm, GaranziaForm, ProfiloForm
 from mongoengine import connect
+from datetime import datetime
 
 import os
 
@@ -86,10 +87,16 @@ def dashboard():
         # Gestione upload foto oggetto e scontrino
         if 'foto_oggetto' in request.files:
             foto_oggetto = secure_filename(request.files['foto_oggetto'].filename)
+            name, ext = os.path.splitext(foto_oggetto)
+            timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+            foto_oggetto = f"{nome_oggetto}_{timestamp}_{name}{ext}"
             request.files['foto_oggetto'].save(os.path.join(app.config['UPLOAD_FOLDER'], foto_oggetto))
 
         if 'scontrino' in request.files:
             scontrino = secure_filename(request.files['scontrino'].filename)
+            name, ext = os.path.splitext(scontrino)
+            timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+            scontrino = f"{nome_oggetto}_Scontrino_{timestamp}_{name}{ext}"
             request.files['scontrino'].save(os.path.join(app.config['UPLOAD_FOLDER'], scontrino))
 
         # Salvataggio della garanzia nel DB
