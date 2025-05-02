@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard</title>
+  </head>
+  <body>
+    <h1>Benvenuto, {{ current_user.username }}</h1>
+    <a href="{{ url_for('logout') }}">Logout</a>
+    <h2>Aggiungi una garanzia</h2>
+    <form action="{{ url_for('dashboard') }}" method="post" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+      {{ form.nome_oggetto.label }} {{ form.nome_oggetto() }} <br />
+      {{ form.data_acquisto.label }} {{ form.data_acquisto() }} <br />
+      {{ form.fine_garanzia.label }} {{ form.fine_garanzia() }} <br />
+      {{ form.luogo_acquisto.label }} {{ form.luogo_acquisto() }} <br />
+      {{ form.note.label }} {{ form.note() }} <br />
+      Foto Oggetto:<input type="file" name="foto_oggetto" /><br />
+      Scontrino:<input type="file" name="scontrino" /><br />
+      <button type="submit">Aggiungi Garanzia</button>
+    </form>
+
+    <h2>Le tue garanzie</h2>
+    <ul>
+      {% for garanzia in garanzie %}
+        <li>
+          <strong>{{ garanzia.nome_oggetto }}</strong><br />
+          Acquistato il: {{ garanzia.data_acquisto }}<br />
+          Fine Garanzia: {{ garanzia.fine_garanzia }}<br />
+          Luogo di acquisto: {{ garanzia.luogo_acquisto }}<br />
+          Note: {{ garanzia.note }}<br />
+          <img src="{{ url_for('static', filename='uploads/' + garanzia.foto_oggetto) }}" width="100" /><br />
+          <img src="{{ url_for('static', filename='uploads/' + garanzia.scontrino) }}" width="100" /><br />
+        </li>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

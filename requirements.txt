@@ -1,0 +1,6 @@
+flask
+mongoengine
+flask-login
+flask-wtf
+werkzeug
+email-validator
