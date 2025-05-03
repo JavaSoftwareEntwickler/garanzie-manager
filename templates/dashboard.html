@@ -64,8 +64,12 @@
                   </p>
                 </div>
                 <div class="card-footer">
+                  {% if garanzia.foto_oggetto %}
                   <img src="{{ url_for('static', filename=garanzia.foto_oggetto) }}" class="img-fluid mb-2" />
+                  {% endif%}
+                  {% if garanzia.scontrino %}
                   <img src="{{ url_for('static', filename=garanzia.scontrino) }}" class="img-fluid" />
+                  {% endif%}
                 </div>
               </div>
             </div>

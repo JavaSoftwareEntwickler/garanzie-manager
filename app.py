@@ -179,14 +179,19 @@ def edit_profile():
         if file_profilo and file_profilo.filename:
 
             # Se esiste una foto precedente, la cancelliamo
-
+            if user.profilo.foto:
+                # Ottieni il percorso del file precedente
+                foto_precedente = os.path.join('static', user.profilo.foto)
+                # Controlla se il file esiste e cancellalo
+                if os.path.exists(foto_precedente):
+                    os.remove(foto_precedente)
 
             ext = os.path.splitext(file_profilo.filename)[1]
             timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
             filename_profilo = f"foto_profilo_{current_user.username}_{timestamp}{ext}"
 
             # Salvataggio foto
-            path_oggetto = os.path.join(profilo_folder, filename_profilo)
+            path_oggetto = os.path.join(str(profilo_folder), filename_profilo)
             file_profilo.save(path_oggetto)
             # Memorizzazione del path relativo nel DB (senza "static/")
             path_relativo = os.path.join('uploads', 'profili', current_user.username, filename_profilo)

@@ -50,7 +50,7 @@
           <label>Foto Profilo</label>
           {% if current_user.profilo.foto %}
             <div class="mb-3">
-              <img src="{{ url_for('static', filename='uploads/' ~ current_user.profilo.foto) }}" alt="Foto Profilo Attuale" class="img-thumbnail" width="150">
+              <img src="{{ url_for('static', filename=current_user.profilo.foto) }}" alt="Foto Profilo Attuale" class="img-thumbnail" width="150">
             </div>
           {% endif %}
           <input type="file" name="foto" class="form-control-file" accept="image/*" capture="user" />
