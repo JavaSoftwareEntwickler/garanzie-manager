@@ -13,8 +13,16 @@
       {% include 'message.html' %}
 
       <!-- Icona profilo -->
+      <!-- Foto del profilo o icona di default -->
       <div class="mb-4">
-        <i class="fas fa-user-circle fa-5x text-primary"></i>
+        {% if current_user.profilo.foto %}
+          <img src="{{ url_for('static', filename='uploads/' ~ current_user.profilo.foto) }}"
+               alt="Foto profilo"
+               class="rounded-circle"
+               style="width: 120px; height: 120px; object-fit: cover;">
+        {% else %}
+          <i class="fas fa-user-circle fa-5x text-primary"></i>
+        {% endif %}
       </div>
 
       <!-- Dati utente -->
@@ -45,9 +53,9 @@
           {% endif %}
         </p>
         <p>
-          <strong>Bio:</strong>
-          {% if current_user.profilo.biografia %}
-            {{ current_user.profilo.biografia }}
+          <strong>Luogo di Nascita:</strong>
+          {% if current_user.profilo.luogo_nascita %}
+            {{ current_user.profilo.luogo_nascita }}
           {% endif %}
         </p>
 

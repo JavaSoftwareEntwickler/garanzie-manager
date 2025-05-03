@@ -58,11 +58,11 @@ def register():
         if User.objects(username=username).first():
             flash('Username già in uso', 'danger')
             return redirect(url_for('register'))
-        
+
         if User.objects(email=email).first():
             flash('Email già in uso', 'danger')
             return redirect(url_for('register'))
-        
+
         user = User(username=username, email=email, password=password)
         user.save()
         flash('Registrazione avvenuta con successo!', 'success')
@@ -133,18 +133,25 @@ def edit_profile():
     if form.validate_on_submit():
         if not user.profilo:
             user.profilo = Profilo()
-            
-        user.profilo.nome = form.nome.data
+
+
+        nome = form.nome.data
+        cognome = form.cognome.data
+        user.profilo.nome = nome
+        user.profilo.nome = cognome
         user.profilo.cognome = form.cognome.data
+        user.profilo.data_nascita = form.data_nascita.data
+        user.profilo.luogo_nascita = form.luogo_nascita.data
         user.profilo.biografia = form.biografia.data
 
-
-        # gestione upload foto
-        if form.foto_profilo.data:
-            filename = secure_filename(form.foto_profilo.data.filename)
-            path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            form.foto_profilo.data.save(path)
-            user.profilo.foto_profilo = filename
+        file = request.files.get('foto')
+        if file and file.filename:  # Solo se è stato caricato un nuovo file
+            filename = secure_filename(file.filename)
+            name, ext = os.path.splitext(filename)
+            timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+            new_filename = f"foto_profilo_{nome}_{cognome}_{timestamp}{ext}"
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_filename))
+            user.profilo.foto = new_filename  # Aggiorna solo se c'è un file valido
 
         user.save()
         flash('Profilo aggiornato con successo', 'success')

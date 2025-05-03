@@ -8,8 +8,9 @@ class Profilo(EmbeddedDocument):
     nome = StringField(max_length=35)
     cognome = StringField(max_length=50)
     data_nascita = DateField()
+    luogo_nascita = StringField(max_length=50)
     biografia = StringField(max_length=500)
-    foto_profilo = StringField()  # path dell'immagine
+    foto = StringField()  # path dell'immagine
 
 class User(Document, UserMixin):
     username = StringField(required=True, unique=True)

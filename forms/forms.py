@@ -22,6 +22,7 @@ class RegisterForm(FlaskForm):
 class ProfiloForm(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired(), Length(min=3, max=35)])
     cognome = StringField('Cognome', validators=[DataRequired(), Length(min=3, max=50)])
-    data_nascita = DateField('Data di Nascita', validators=[Optional()], format='%Y-%m-%d')
+    data_nascita = DateField('Data di Nascita', format='%Y-%m-%d', validators=[DataRequired()])
+    luogo_nascita = StringField('Luogo di Nascita', validators=[DataRequired(), Length(min=3, max=50)])
     biografia = TextAreaField('Biografia', validators=[Optional(), Length(max=500)])
     foto_profilo = FileField('Foto Profilo', validators=[Optional(), FileAllowed(['jpg', 'png', 'jpeg'], 'Solo immagini!')])
