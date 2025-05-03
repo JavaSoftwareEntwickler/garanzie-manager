@@ -9,8 +9,9 @@ __pycache__/
 # img
 static/uploads/
 
-# IDE
+# IDES
 .vscode/
+.idea
 
 # Distribution / packaging
 .Python
