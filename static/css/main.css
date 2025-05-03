@@ -12,8 +12,8 @@
 }
 .card-form {
     width: 100%;
-    max-width: 400px;
-    min-width: 320px;
+    max-width: 650px;
+    box-sizing: border-box;
     padding: 2rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
     border-radius: 1rem;
@@ -21,8 +21,7 @@
 }
 .card-garanzie {
     width: 100%;
-    max-width: 400px;
-    min-width: 320px;
+    box-sizing: border-box;
     padding: 2rem;
     border-radius: 1rem;
     background-color: #fff;

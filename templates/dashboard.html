@@ -52,7 +52,7 @@
         <div class="card-body">
           <div class="row">
             {% for garanzia in garanzie %}
-              <div class="col-md-6 mb-4">
+              <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 mb-4">
                 <div class="card-garanzie">
                   <div class="container-img-garanzie">
                     {% if garanzia.foto_oggetto %}
@@ -104,6 +104,6 @@
             {% endfor %}
           </div>
         </div>
-      </div>
+        <div class="card-footer text-center">
     </div>
 {% endblock %}
