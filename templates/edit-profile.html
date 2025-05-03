@@ -53,7 +53,7 @@
               <img src="{{ url_for('static', filename='uploads/' ~ current_user.profilo.foto) }}" alt="Foto Profilo Attuale" class="img-thumbnail" width="150">
             </div>
           {% endif %}
-          <input type="file" name="foto" class="form-control-file" accept="image/*" />
+          <input type="file" name="foto" class="form-control-file" accept="image/*" capture="user" />
         </div>
 
         <button type="submit" class="btn btn-primary btn-block">Salva modifiche</button>

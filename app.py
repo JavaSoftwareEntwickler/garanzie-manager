@@ -146,6 +146,12 @@ def edit_profile():
 
         file = request.files.get('foto')
         if file and file.filename:
+            # Se esiste una foto precedente, la cancelliamo
+            if user.profilo.foto:
+                foto_precedente = os.path.join(app.config['UPLOAD_FOLDER'], user.profilo.foto)
+                if os.path.exists(foto_precedente):
+                    os.remove(foto_precedente)
+
             filename = secure_filename(file.filename)
             name, ext = os.path.splitext(filename)
             timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
