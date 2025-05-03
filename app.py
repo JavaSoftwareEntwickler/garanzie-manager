@@ -79,27 +79,10 @@ def dashboard():
         data_acquisto = form.data_acquisto.data
         fine_garanzia = form.fine_garanzia.data
         luogo_acquisto = form.luogo_acquisto.data
-        note = form.note.data
-
         foto_oggetto = None
         scontrino = None
+        note = form.note.data
 
-        # Gestione upload foto oggetto e scontrino
-        if 'foto_oggetto' in request.files:
-            foto_oggetto = secure_filename(request.files['foto_oggetto'].filename)
-            name, ext = os.path.splitext(foto_oggetto)
-            timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-            foto_oggetto = f"{nome_oggetto}_{timestamp}_{name}{ext}"
-            request.files['foto_oggetto'].save(os.path.join(app.config['UPLOAD_FOLDER'], foto_oggetto))
-
-        if 'scontrino' in request.files:
-            scontrino = secure_filename(request.files['scontrino'].filename)
-            name, ext = os.path.splitext(scontrino)
-            timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-            scontrino = f"{nome_oggetto}_Scontrino_{timestamp}_{name}{ext}"
-            request.files['scontrino'].save(os.path.join(app.config['UPLOAD_FOLDER'], scontrino))
-
-        # Salvataggio della garanzia nel DB
         garanzia = Garanzia(
             user=current_user,
             nome_oggetto=nome_oggetto,
@@ -111,6 +94,46 @@ def dashboard():
             note=note
         )
         garanzia.save()
+
+        # se non c'è crea la cartella
+        # ├── garanzie /
+        # │   └── < username > /
+        # │       └── < garanzia_id > /
+
+        # Crea la cartella per la garanzia se non esiste
+        garanzia_folder = os.path.join(app.config['UPLOAD_FOLDER'], 'garanzie', current_user.username, str(garanzia.id))
+        os.makedirs(garanzia_folder, exist_ok=True)
+
+        # 3. Gestione upload foto oggetto
+        file_oggetto = request.files.get('foto_oggetto')
+        if file_oggetto and file_oggetto.filename:
+            ext = os.path.splitext(file_oggetto.filename)[1]
+            timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+            filename_oggetto = f"foto_prodotto_{current_user.username}_{timestamp}{ext}"
+            path_oggetto = os.path.join(str(garanzia_folder), filename_oggetto)
+            # Salvataggio foto nel path
+            file_oggetto.save(path_oggetto)
+            # Memorizzazione del path relativo a DB
+            path_relativo = os.path.join('uploads','garanzie', current_user.username, str(garanzia.id), filename_oggetto)
+            garanzia.foto_oggetto = path_relativo.replace(os.path.sep, '/')
+
+        # 4. Gestione upload scontrino
+        file_scontrino = request.files.get('scontrino')
+        if file_scontrino and file_scontrino.filename:
+            ext = os.path.splitext(file_scontrino.filename)[1]
+            timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+            filename_scontrino = f"foto_scontrino_{current_user.username}_{timestamp}{ext}"
+            path_scontrino = os.path.join(str(garanzia_folder), filename_scontrino)
+            # Salvataggio foto nel path
+            file_scontrino.save(path_scontrino)
+            # Memorizzazione del path relativo a DB
+
+            path_relativo = os.path.join('uploads','garanzie', current_user.username, str(garanzia.id), filename_scontrino)
+            garanzia.scontrino = path_relativo.replace(os.path.sep, '/')
+
+        # Aggiorna garanzia con i path delle immagini
+        garanzia.save()
+
         flash('Garanzia aggiunta con successo!', 'success')
         return redirect(url_for('dashboard'))
 
@@ -134,30 +157,40 @@ def edit_profile():
         if not user.profilo:
             user.profilo = Profilo()
 
-
-        nome = form.nome.data
-        cognome = form.cognome.data
-        user.profilo.nome = nome
-        user.profilo.cognome = cognome
-
+        user.profilo.nome = form.nome.data
+        user.profilo.cognome = form.cognome.data
         user.profilo.data_nascita = form.data_nascita.data
         user.profilo.luogo_nascita = form.luogo_nascita.data
         user.profilo.biografia = form.biografia.data
 
-        file = request.files.get('foto')
-        if file and file.filename:
-            # Se esiste una foto precedente, la cancelliamo
-            if user.profilo.foto:
-                foto_precedente = os.path.join(app.config['UPLOAD_FOLDER'], user.profilo.foto)
-                if os.path.exists(foto_precedente):
-                    os.remove(foto_precedente)
+        # se non c'è crea la cartella
+        # uploads /
+        # ├── profili /
+        # │   └── < username > /
 
-            filename = secure_filename(file.filename)
-            name, ext = os.path.splitext(filename)
+        # Crea la cartella per la garanzia se non esiste
+        profilo_folder = os.path.join(app.config['UPLOAD_FOLDER'], 'profili', current_user.username)
+        os.makedirs(profilo_folder, exist_ok=True)
+        print(profilo_folder)
+
+        # Gestione upload foto profilo
+        file_profilo = request.files.get('foto')
+
+        if file_profilo and file_profilo.filename:
+
+            # Se esiste una foto precedente, la cancelliamo
+
+
+            ext = os.path.splitext(file_profilo.filename)[1]
             timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-            new_filename = f"foto_profilo_user_{user.username}_{timestamp}{ext}"
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_filename))
-            user.profilo.foto = new_filename  # Aggiorna solo se c'è un file valido
+            filename_profilo = f"foto_profilo_{current_user.username}_{timestamp}{ext}"
+
+            # Salvataggio foto
+            path_oggetto = os.path.join(profilo_folder, filename_profilo)
+            file_profilo.save(path_oggetto)
+            # Memorizzazione del path relativo nel DB (senza "static/")
+            path_relativo = os.path.join('uploads', 'profili', current_user.username, filename_profilo)
+            user.profilo.foto = path_relativo.replace(os.path.sep, '/')
 
         user.save()
         flash('Profilo aggiornato con successo', 'success')

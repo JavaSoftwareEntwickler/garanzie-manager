@@ -1,0 +1,9 @@
+uploads/
+├── profili/
+│   └── <username>/
+│       └── foto_profilo_<username>_<timestamp>.jpg
+├── garanzie/
+│   └── <username>/
+│       └── <garanzia_id>/
+│           ├── foto_prodotto_<username>_<timestamp>.jpg
+│           └── foto_scontrino_<username>_<timestamp>.jpg

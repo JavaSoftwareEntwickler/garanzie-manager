@@ -16,7 +16,7 @@
       <!-- Foto del profilo o icona di default -->
       <div class="mb-4">
         {% if current_user.profilo.foto %}
-          <img src="{{ url_for('static', filename='uploads/' ~ current_user.profilo.foto) }}"
+          <img src="{{ url_for('static', filename=current_user.profilo.foto) }}"
                alt="Foto profilo"
                class="rounded-circle"
                style="width: 120px; height: 120px; object-fit: cover;">
