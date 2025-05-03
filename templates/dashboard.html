@@ -48,61 +48,62 @@
     <div class="card shadow-lg">
       <div class="card-header text-center">
         <h4>Le tue garanzie</h4>
-      </div>
-      <div class="card-body">
-        <div class="row">
-          {% for garanzia in garanzie %}
-            <div class="col-md-6 mb-4">
-              <div class="card-garanzie">
-                <div class="container-img-garanzie">
-                  {% if garanzia.foto_oggetto %}
-                  <img class="img-garanzie-top" src="{{ url_for('static', filename=garanzia.foto_oggetto) }}" />
-                  {% endif%}
-                </div>
-
-                <div class="card-body">
-
-                  <h5 class="card-title">{{ garanzia.nome_oggetto }}</h5>
-                  <p class="card-text">
-                    <strong>Acquisto:</strong> {{ garanzia.data_acquisto }}<br />
-                    <strong>Scadenza:</strong> {{ garanzia.fine_garanzia }}<br />
-                    <strong>Luogo:</strong> {{ garanzia.luogo_acquisto }}<br />
-                    <strong>Note:</strong> {{ garanzia.note }}
-                  </p>
-                </div>
-              <div class="card-footer text-center">
-                {% if garanzia.scontrino %}
-                  <button
-                    type="button"
-                    class="btn btn-link p-0"
-                    data-bs-toggle="modal"
-                    data-bs-target="#modalScontrino{{ garanzia.id }}">
-                    Apri Scontrino
-                  </button>
-                {% endif %}
-              </div>
-
-              {% if garanzia.scontrino %}
-              <div class="modal fade" id="modalScontrino{{ garanzia.id }}" tabindex="-1" role="dialog" aria-labelledby="modalScontrinoLabel{{ garanzia.id }}" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                  <div class="modal-content bg-dark">
-                    <div class="modal-header border-0">
-                      <h5 class="modal-title text-white" id="modalScontrinoLabel{{ garanzia.id }}">Scontrino</h5>
-                      <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Chiudi"></button>
-                    </div>
-                    <div class="modal-body text-center">
-                      <img src="{{ url_for('static', filename=garanzia.scontrino) }}" alt="Scontrino" class="img-fluid rounded" />
-                    </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            {% for garanzia in garanzie %}
+              <div class="col-md-6 mb-4">
+                <div class="card-garanzie">
+                  <div class="container-img-garanzie">
+                    {% if garanzia.foto_oggetto %}
+                      <img class="img-garanzie-top" src="{{ url_for('static', filename=garanzia.foto_oggetto) }}" />
+                    {% endif %}
                   </div>
+                  <div class="card-body">
+                    <h5 class="card-title">{{ garanzia.nome_oggetto }}</h5>
+                    <p class="card-text">
+                      <strong>Acquisto:</strong> {{ garanzia.data_acquisto }}<br />
+                      <strong>Scadenza:</strong> {{ garanzia.fine_garanzia }}<br />
+                      <strong>Luogo:</strong> {{ garanzia.luogo_acquisto }}<br />
+                      <strong>Note:</strong> {{ garanzia.note }}
+                    </p>
+                  </div>
+                  <div class="card-footer text-center">
+                    {% if garanzia.scontrino %}
+                      <!-- Bottone per aprire la modal -->
+                      <button
+                        type="button"
+                        class="btn btn-link p-0"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalScontrino{{ garanzia.id }}">
+                        Apri Scontrino
+                      </button>
+                    {% endif %}
+                  </div>
+
+                  <!-- Modal per visualizzare l'immagine dello scontrino -->
+                  {% if garanzia.scontrino %}
+                    <div class="modal fade" id="modalScontrino{{ garanzia.id }}" tabindex="-1" aria-labelledby="modalScontrinoLabel{{ garanzia.id }}" aria-hidden="true">
+                      <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content bg-dark">
+                          <div class="modal-header border-0">
+                            <h5 class="modal-title text-white" id="modalScontrinoLabel{{ garanzia.id }}">Scontrino</h5>
+                            <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+                          </div>
+                          <div class="modal-body text-center">
+                            <!-- Immagine dello scontrino a schermo intero -->
+                            <img src="{{ url_for('static', filename=garanzia.scontrino) }}" alt="Scontrino" class="img-fluid img-fullscreen" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+
                 </div>
               </div>
-              {% endif %}
-
-              </div>
-            </div>
-          {% endfor %}
+            {% endfor %}
+          </div>
         </div>
       </div>
     </div>
-  </div>
 {% endblock %}
