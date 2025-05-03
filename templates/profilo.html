@@ -26,7 +26,7 @@
       </div>
 
       <!-- Dati utente -->
-      <div class="text-left">
+      <div class="text-start">
         <p>
           <strong>Username:</strong> {{ current_user.username }}
         </p>
@@ -64,8 +64,8 @@
 
       <!-- Azioni -->
       <div class="mt-4">
-        <a href="{{ url_for('edit_profile') }}" class="btn btn-outline-primary btn-block mb-2">Modifica Profilo</a>
-        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary btn-block">Torna alla Dashboard</a>
+        <a href="{{ url_for('edit_profile') }}" class="btn btn-outline-primary w-100 mb-2">Modifica Profilo</a>
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary w-100">Torna alla Dashboard</a>
       </div>
     </div>
   </div>

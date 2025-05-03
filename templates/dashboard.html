@@ -11,33 +11,33 @@
       <div class="col-md-12">
         <div class="card shadow-lg">
           <div class="card-header text-center">
-            <h4 id="toggleFormHeader" data-toggle="collapse" data-target="#collapseForm" style="cursor: pointer;">Aggiungi una nuova garanzia</h4>
+            <h4 id="toggleFormHeader" data-bs-toggle="collapse" data-bs-target="#collapseForm" style="cursor: pointer;">Aggiungi una nuova garanzia</h4>
             <!-- Messaggi di Flash -->
             {% include 'message.html' %}
           </div>
           <div id="collapseForm" class="collapse card-body">
             <form action="{{ url_for('dashboard') }}" method="post" enctype="multipart/form-data">
               {{ form.hidden_tag() }}
-              <div class="form-row">
-                <div class="form-group col-md-6">{{ form.nome_oggetto.label }} {{ form.nome_oggetto(class='form-control') }}</div>
-                <div class="form-group col-md-3">{{ form.data_acquisto.label }} {{ form.data_acquisto(class='form-control') }}</div>
-                <div class="form-group col-md-3">{{ form.fine_garanzia.label }} {{ form.fine_garanzia(class='form-control') }}</div>
+              <div class="row">
+                <div class="col-md-6 mb-3">{{ form.nome_oggetto.label }} {{ form.nome_oggetto(class='form-control') }}</div>
+                <div class="col-md-3 mb-3">{{ form.data_acquisto.label }} {{ form.data_acquisto(class='form-control') }}</div>
+                <div class="col-md-3 mb-3">{{ form.fine_garanzia.label }} {{ form.fine_garanzia(class='form-control') }}</div>
               </div>
-              <div class="form-row">
-                <div class="form-group col-md-6">{{ form.luogo_acquisto.label }} {{ form.luogo_acquisto(class='form-control') }}</div>
-                <div class="form-group col-md-6">{{ form.note.label }} {{ form.note(class='form-control') }}</div>
+              <div class="row">
+                <div class="col-md-6 mb-3">{{ form.luogo_acquisto.label }} {{ form.luogo_acquisto(class='form-control') }}</div>
+                <div class="col-md-6 mb-3">{{ form.note.label }} {{ form.note(class='form-control') }}</div>
               </div>
-              <div class="form-row">
-                <div class="form-group col-md-6">
+              <div class="row">
+                <div class="col-md-6 mb-3">
                   <label>Foto Oggetto</label>
-                  <input type="file" name="foto_oggetto" class="form-control-file" accept="image/*" capture="environment" />
+                  <input type="file" name="foto_oggetto" class="form-control" accept="image/*" capture="environment" />
                 </div>
-                <div class="form-group col-md-6">
+                <div class="col-md-6 mb-3">
                   <label>Scontrino</label>
-                  <input type="file" name="scontrino" class="form-control-file" accept="image/*" capture="environment" />
+                  <input type="file" name="scontrino" class="form-control" accept="image/*" capture="environment" />
                 </div>
               </div>
-              <button type="submit" class="btn btn-primary btn-block">Aggiungi Garanzia</button>
+              <button type="submit" class="btn btn-primary w-100">Aggiungi Garanzia</button>
             </form>
           </div>
         </div>
@@ -53,8 +53,15 @@
         <div class="row">
           {% for garanzia in garanzie %}
             <div class="col-md-6 mb-4">
-              <div class="card h-100 border shadow-sm">
+              <div class="card-garanzie">
+                <div class="container-img-garanzie">
+                  {% if garanzia.foto_oggetto %}
+                  <img class="img-garanzie-top" src="{{ url_for('static', filename=garanzia.foto_oggetto) }}" />
+                  {% endif%}
+                </div>
+
                 <div class="card-body">
+
                   <h5 class="card-title">{{ garanzia.nome_oggetto }}</h5>
                   <p class="card-text">
                     <strong>Acquisto:</strong> {{ garanzia.data_acquisto }}<br />
@@ -63,14 +70,34 @@
                     <strong>Note:</strong> {{ garanzia.note }}
                   </p>
                 </div>
-                <div class="card-footer">
-                  {% if garanzia.foto_oggetto %}
-                  <img src="{{ url_for('static', filename=garanzia.foto_oggetto) }}" class="img-fluid mb-2" />
-                  {% endif%}
-                  {% if garanzia.scontrino %}
-                  <img src="{{ url_for('static', filename=garanzia.scontrino) }}" class="img-fluid" />
-                  {% endif%}
+              <div class="card-footer text-center">
+                {% if garanzia.scontrino %}
+                  <button
+                    type="button"
+                    class="btn btn-link p-0"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalScontrino{{ garanzia.id }}">
+                    Apri Scontrino
+                  </button>
+                {% endif %}
+              </div>
+
+              {% if garanzia.scontrino %}
+              <div class="modal fade" id="modalScontrino{{ garanzia.id }}" tabindex="-1" role="dialog" aria-labelledby="modalScontrinoLabel{{ garanzia.id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content bg-dark">
+                    <div class="modal-header border-0">
+                      <h5 class="modal-title text-white" id="modalScontrinoLabel{{ garanzia.id }}">Scontrino</h5>
+                      <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                      <img src="{{ url_for('static', filename=garanzia.scontrino) }}" alt="Scontrino" class="img-fluid rounded" />
+                    </div>
+                  </div>
                 </div>
+              </div>
+              {% endif %}
+
               </div>
             </div>
           {% endfor %}
