@@ -138,18 +138,18 @@ def edit_profile():
         nome = form.nome.data
         cognome = form.cognome.data
         user.profilo.nome = nome
-        user.profilo.nome = cognome
-        user.profilo.cognome = form.cognome.data
+        user.profilo.cognome = cognome
+
         user.profilo.data_nascita = form.data_nascita.data
         user.profilo.luogo_nascita = form.luogo_nascita.data
         user.profilo.biografia = form.biografia.data
 
         file = request.files.get('foto')
-        if file and file.filename:  # Solo se è stato caricato un nuovo file
+        if file and file.filename:
             filename = secure_filename(file.filename)
             name, ext = os.path.splitext(filename)
             timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
-            new_filename = f"foto_profilo_{nome}_{cognome}_{timestamp}{ext}"
+            new_filename = f"foto_profilo_user_{user.username}_{timestamp}{ext}"
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_filename))
             user.profilo.foto = new_filename  # Aggiorna solo se c'è un file valido
 
