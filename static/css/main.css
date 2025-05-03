@@ -1,0 +1,62 @@
+.fade-message {
+    opacity: 1;
+    transition: opacity 1000ms linear;
+}
+.remove-message {
+    opacity: 0;
+}
+.carousel-item img {
+    height: 500px;
+    object-fit: cover;
+    object-position: center;
+}
+.card-form {
+    width: 100%;
+    max-width: 400px;
+    min-width: 320px;
+    padding: 2rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    border-radius: 1rem;
+    background-color: #fff;
+}
+.card-garanzie {
+    width: 100%;
+    max-width: 400px;
+    min-width: 320px;
+    padding: 2rem;
+    border-radius: 1rem;
+    background-color: #fff;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-garanzie:hover {
+    transform: translateY(-0.5px) scale(1.02);
+    box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.2);
+}
+/*Per gestire l'apertura della modale dello scontrino*/
+.card-garanzie.no-hover:hover {
+    transform: none;
+    box-shadow: none;
+}
+.container-img-garanzie {
+    border-radius: 1rem;
+    height: 150px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8f9fa;
+
+}
+.img-garanzie-top {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    padding: 0.5rem;
+}
+.img-fullscreen {
+    width: 100%;
+    height: 100vh; /* Alta quanto la finestra */
+    object-fit: contain; /* Mantiene le proporzioni dell'immagine */
+    object-position: center;
+}
