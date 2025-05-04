@@ -9,14 +9,15 @@
     <!-- Card Aggiungi Garanzia (in alto e larga) -->
     <div class="row mb-5">
       <div class="col-md-12">
-        <div class="card shadow-lg">
+        <div class="card shadow-lg ">
           <div class="card-header text-center">
             <h4 id="toggleFormHeader" data-bs-toggle="collapse" data-bs-target="#collapseForm" style="cursor: pointer;">Aggiungi una nuova garanzia</h4>
             <!-- Messaggi di Flash -->
             {% include 'message.html' %}
           </div>
           <div id="collapseForm" class="collapse card-body">
-            <form action="{{ url_for('dashboard') }}" method="post" enctype="multipart/form-data">
+            <div class="d-flex justify-content-center">
+            <form class="card-form text-center" action="{{ url_for('dashboard') }}" method="post" enctype="multipart/form-data">
               {{ form.hidden_tag() }}
               <div class="row">
                 <div class="col-md-6 mb-3">{{ form.nome_oggetto.label }} {{ form.nome_oggetto(class='form-control') }}</div>
@@ -40,6 +41,7 @@
               <button type="submit" class="btn btn-primary w-100">Aggiungi Garanzia</button>
             </form>
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -68,7 +70,7 @@
                       <strong>Note:</strong> {{ garanzia.note }}
                     </p>
                   </div>
-                  <div class="card-footer text-center">
+                  <div class="card-footer">
                     {% if garanzia.scontrino %}
                       <!-- Bottone per aprire la modal -->
                       <button
@@ -78,7 +80,9 @@
                         data-bs-target="#modalScontrino{{ garanzia.id }}">
                         Apri Scontrino
                       </button>
+                      <br>
                     {% endif %}
+                    <a href="{{ url_for('modifica_garanzia', id=garanzia.id) }}" class="btn btn-outline-primary w-100 mb-2">Modifica Garanzia</a>
                   </div>
 
                   <!-- Modal per visualizzare l'immagine dello scontrino -->

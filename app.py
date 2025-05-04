@@ -140,6 +140,58 @@ def dashboard():
     garanzie = Garanzia.objects(user=current_user)
     return render_template('dashboard.html', form=form, garanzie=garanzie)
 
+@app.route('/modifica_garanzia/<id>', methods=['GET', 'POST'])
+def modifica_garanzia(id):
+    garanzia = Garanzia.objects(id=id).first()
+    form = GaranziaForm(obj=garanzia) 
+    if form.validate_on_submit():
+        garanzia.nome_oggetto = form.nome_oggetto.data
+        garanzia.data_acquisto = form.data_acquisto.data
+        garanzia.fine_garanzia = form.fine_garanzia.data
+        garanzia.luogo_acquisto = form.luogo_acquisto.data
+        garanzia.note = form.note.data
+        # Gestisci l'upload di file per foto e scontrino
+        # se non c'è crea la cartella
+        # ├── garanzie /
+        # │   └── < username > /
+        # │       └── < garanzia_id > /
+
+        # Crea la cartella per la garanzia se non esiste
+        garanzia_folder = os.path.join(app.config['UPLOAD_FOLDER'], 'garanzie', current_user.username, str(garanzia.id))
+        os.makedirs(garanzia_folder, exist_ok=True)
+
+        # 3. Gestione upload foto oggetto
+        file_oggetto = request.files.get('foto_oggetto')
+        if file_oggetto and file_oggetto.filename:
+            ext = os.path.splitext(file_oggetto.filename)[1]
+            timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+            filename_oggetto = f"foto_prodotto_{current_user.username}_{timestamp}{ext}"
+            path_oggetto = os.path.join(str(garanzia_folder), filename_oggetto)
+            # Salvataggio foto nel path
+            file_oggetto.save(path_oggetto)
+            # Memorizzazione del path relativo a DB
+            path_relativo = os.path.join('uploads','garanzie', current_user.username, str(garanzia.id), filename_oggetto)
+            garanzia.foto_oggetto = path_relativo.replace(os.path.sep, '/')
+
+        # 4. Gestione upload scontrino
+        file_scontrino = request.files.get('scontrino')
+        if file_scontrino and file_scontrino.filename:
+            ext = os.path.splitext(file_scontrino.filename)[1]
+            timestamp = datetime.now().strftime('%Y%m%d%H%M%S')
+            filename_scontrino = f"foto_scontrino_{current_user.username}_{timestamp}{ext}"
+            path_scontrino = os.path.join(str(garanzia_folder), filename_scontrino)
+            # Salvataggio foto nel path
+            file_scontrino.save(path_scontrino)
+            # Memorizzazione del path relativo a DB
+
+            path_relativo = os.path.join('uploads','garanzie', current_user.username, str(garanzia.id), filename_scontrino)
+            garanzia.scontrino = path_relativo.replace(os.path.sep, '/')
+
+        # Aggiorna garanzia con i path delle immagini
+        flash('Garanzia modificata con successo!', 'success')
+        return redirect(url_for('dashboard'))
+    return render_template('modifica-garanzia.html', form=form, garanzia=garanzia)
+
 
 @app.route('/profilo', methods=['GET', 'POST'])
 def profilo():
