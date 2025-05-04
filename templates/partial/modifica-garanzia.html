@@ -1,0 +1,61 @@
+<div class="row mb-5">
+  <div class="col-md-12">
+    <div class="card shadow-lg">
+      <div class="card-header text-center">
+        <h4 id="toggleFormHeader" data-bs-toggle="collapse" data-bs-target="#collapseForm" style="cursor: pointer;">Modifica la garanzia</h4>
+        <!-- Messaggi di Flash -->
+        {% include 'message.html' %}
+      </div>
+      <div id="collapseForm" class="collapse card-body">
+        <div class="container mt-5 d-flex justify-content-center">
+          <form class="card-form text-center" action="{{ url_for('modifica_garanzia', id=garanzia.id) }}" method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="row">
+              <div class="col-md-6 mb-3">{{ form.nome_oggetto.label }} {{ form.nome_oggetto(class='form-control') }}</div>
+              <div class="col-md-3 mb-3">{{ form.data_acquisto.label }} {{ form.data_acquisto(class='form-control') }}</div>
+              <div class="col-md-3 mb-3">{{ form.fine_garanzia.label }} {{ form.fine_garanzia(class='form-control') }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">{{ form.luogo_acquisto.label }} {{ form.luogo_acquisto(class='form-control') }}</div>
+              <div class="col-md-6 mb-3">{{ form.note.label }} {{ form.note(class='form-control') }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <div class="mb-3 card-garanzie">
+                  <div class="container-img-garanzie">
+                    <label>Foto Oggetto</label>
+                    {% if garanzia.foto_oggetto %}
+                      <div class="mb-3">
+                        <img src="{{ url_for('static', filename=garanzia.foto_oggetto) }}" alt="Foto Oggetto Attuale" class="img-garanzie-top" width="150" />
+                      </div>
+                    {% endif %}
+                    <input type="file" name="foto_oggetto" class="form-control" accept="image/*" capture="environment" />
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <div class="mb-3 card-garanzie">
+                  <div class="container-img-garanzie">
+                    <label>Scontrino</label>
+                    {% if garanzia.scontrino %}
+                      <div class="mb-3">
+                        <img src="{{ url_for('static', filename=garanzia.scontrino) }}" alt="Foto Scontrino attuale" class="img-garanzie-top" width="150" />
+                      </div>
+                    {% endif %}
+                  </div>
+                  <input type="file" name="scontrino" class="form-control" accept="image/*" capture="environment" />
+                </div>
+              </div>
+            </div>
+            <!-- Azioni -->
+            <div class="mt-4">
+              <button type="submit" class="btn btn-primary w-100">Conferma modifica</button>
+              <a href="{{ url_for('dashboard') }}" class="btn btn-secondary w-100">Annulla modifica</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

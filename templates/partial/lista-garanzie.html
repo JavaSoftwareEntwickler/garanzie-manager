@@ -1,0 +1,65 @@
+<!-- Inizio Grande Card con lista garanzie -->
+<div class="card shadow-lg">
+  <div class="card-header text-center">
+    <h4 class="">I tuoi prodotti</h4>
+  </div>
+  <div class="card-body">
+    <div class="row">
+      {% for garanzia in garanzie %}
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-4 mb-4">
+          <div class="card-garanzie">
+            <div class="container-img-garanzie">
+              {% if garanzia.foto_oggetto %}
+                <img class="img-garanzie-top" src="{{ url_for('static', filename=garanzia.foto_oggetto) }}" />
+              {% endif %}
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ garanzia.nome_oggetto }}</h5>
+              <p class="card-text">
+                <strong>Acquisto:</strong> {{ garanzia.data_acquisto }}<br />
+                <strong>Scadenza:</strong> {{ garanzia.fine_garanzia }}<br />
+                <strong>Luogo:</strong> {{ garanzia.luogo_acquisto }}<br />
+                <strong>Note:</strong> {{ garanzia.note }}
+              </p>
+            </div>
+            <!-- Azioni: Apri scontrino, modifica garanzia o cancella garanzia -->
+            <div class="card-footer row">
+              {% if garanzia.scontrino %}
+              <div class="col-md-12">
+                <!-- Bottone per aprire la modal -->
+                <button type="button" class="btn btn-outline-primary w-100 mb-2" data-bs-toggle="modal" data-bs-target="#modalScontrino{{ garanzia.id }}">Apri Scontrino</button>
+              </div>
+              {% endif %}
+              <div class="col-md-6">
+                <a href="{{ url_for('modifica_garanzia', id=garanzia.id) }}" class="btn btn-outline-primary w-100 mb-2">Modifica Garanzia</a>
+              </div>
+              <div class="col-md-6">
+                <a href="{{ url_for('elimina_garanzia', id=garanzia.id) }}" class="btn btn-outline-danger w-100 mb-2">Elimina Garanzia</a>
+              </div>
+            </div>
+
+            <!-- Modal per visualizzare l'immagine dello scontrino -->
+            {% if garanzia.scontrino %}
+              <div class="modal fade" id="modalScontrino{{ garanzia.id }}" tabindex="-1" aria-labelledby="modalScontrinoLabel{{ garanzia.id }}" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                  <div class="modal-content bg-dark">
+                    <div class="modal-header border-0">
+                      <h5 class="modal-title text-white" id="modalScontrinoLabel{{ garanzia.id }}">Scontrino</h5>
+                      <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Chiudi"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                      <!-- Immagine dello scontrino a schermo intero -->
+                      <img src="{{ url_for('static', filename=garanzia.scontrino) }}" alt="Scontrino" class="img-fluid img-fullscreen" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div class="card-footer">footer card</div>
+</div>
+<!-- Fine Grande Card con lista garanzie -->

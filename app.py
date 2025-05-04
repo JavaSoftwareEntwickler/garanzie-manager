@@ -193,6 +193,11 @@ def modifica_garanzia(id):
     return render_template('modifica-garanzia.html', form=form, garanzia=garanzia)
 
 
+@app.route('/elimina_garanzia/<id>', methods=['GET', 'POST'])
+def elimina_garanzia(id):
+   return redirect(url_for('dashboard'))
+
+
 @app.route('/profilo', methods=['GET', 'POST'])
 def profilo():
     if request.method == 'POST':

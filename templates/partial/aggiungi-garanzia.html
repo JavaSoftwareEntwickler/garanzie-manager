@@ -1,0 +1,38 @@
+<div class="row mb-5">
+    <div class="col-md-12">
+      <div class="card shadow-lg ">
+        <div class="card-header text-center">
+          <h4 id="toggleFormHeader" data-bs-toggle="collapse" data-bs-target="#collapseForm" style="cursor: pointer;">Aggiungi una nuova garanzia</h4>
+          <!-- Messaggi di Flash -->
+          {% include 'message.html' %}
+        </div>
+        <div id="collapseForm" class="collapse card-body">
+          <div class="d-flex justify-content-center">
+          <form class="card-form text-center" action="{{ url_for('dashboard') }}" method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="row">
+              <div class="col-md-6 mb-3">{{ form.nome_oggetto.label }} {{ form.nome_oggetto(class='form-control') }}</div>
+              <div class="col-md-3 mb-3">{{ form.data_acquisto.label }} {{ form.data_acquisto(class='form-control') }}</div>
+              <div class="col-md-3 mb-3">{{ form.fine_garanzia.label }} {{ form.fine_garanzia(class='form-control') }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">{{ form.luogo_acquisto.label }} {{ form.luogo_acquisto(class='form-control') }}</div>
+              <div class="col-md-6 mb-3">{{ form.note.label }} {{ form.note(class='form-control') }}</div>
+            </div>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label>Foto Oggetto</label>
+                <input type="file" name="foto_oggetto" class="form-control" accept="image/*" capture="environment" />
+              </div>
+              <div class="col-md-6 mb-3">
+                <label>Scontrino</label>
+                <input type="file" name="scontrino" class="form-control" accept="image/*" capture="environment" />
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Aggiungi Garanzia</button>
+          </form>
+        </div>
+      </div>
+      </div>
+    </div>
+  </div>
