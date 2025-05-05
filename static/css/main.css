@@ -1,3 +1,7 @@
+body {
+    padding-top: 50px;/* Distanza sufficiente per evitare che il contenuto venga coperto dalla navbar */
+}
+
 .fade-message {
     opacity: 1;
     transition: opacity 1000ms linear;
